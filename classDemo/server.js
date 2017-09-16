@@ -55,18 +55,37 @@ app.post("/submit", function(req, res) {
   // to a string instead of a boolean
   book.read = false;
 
+  db.books.insert(book, (err, data) => {
+    if (err) {
+      console.log(err)
+    } else {
+      res.json(data);
+    };
+  });
 });
 
 
 // Find all books marked as read
 app.get("/read", function(req, res) {
-
+  db.books.find({'read': true}, (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(data);
+    };
+  });
 });
 
 
 // Find all books marked as unread
 app.get("/unread", function(req, res) {
-
+  db.books.find({'read': false}, (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(data);
+    };
+  });
 });
 
 
@@ -74,7 +93,17 @@ app.get("/unread", function(req, res) {
 app.get("/markread/:id", function(req, res) {
   // Remember: when searching by an id, the id needs to be passed in
   // as (mongojs.ObjectId(IDYOUWANTTOFIND))
-
+  //db.books.findByIdAndUpdate
+  db.books.update({
+    '_id': mongojs.ObjectId(req.params.id)
+  }, {
+    $set: {
+      'read': false
+    }
+  },
+function(err, edited) {
+  
+})
 });
 
 
