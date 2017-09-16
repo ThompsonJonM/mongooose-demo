@@ -10,6 +10,36 @@ var Schema = mongoose.Schema;
 // Instantiate a userSchema object with the Schema class we just made
 var UserSchema = new Schema({
 
+  username: {
+    type: String,
+    trim: true,
+    required: 'A username is required.'
+  },
+
+  password : {
+    type: String,
+    trim: true,
+    // minlength: 6
+    required: 'A password is required.',
+    validate: [
+      function(input) {
+        return input.length >= 6;
+      },
+      'Please enter a password that is longer.'
+    ]
+  },
+
+  email: {
+    type: String,
+    unique: true,
+    match: [/.+\@.+\..+/, 'Please enter a valid email address']
+  },
+
+  userCreated: {
+    type: Date,
+    default: Date.now
+  }
+
   /* TODO:
    * Add four entries into our schema. These should be:
    *
